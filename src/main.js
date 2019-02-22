@@ -1,5 +1,7 @@
-const mainFilterElement = document.querySelector('.main__filter');
-const boardTasksElement = document.querySelector('.board__tasks');
+'use strict'
+
+const mainFilterElement = document.querySelector(`.main__filter`);
+const boardTasksElement = document.querySelector(`.board__tasks`);
 const numberOfCards = 7;
 const randomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
@@ -9,14 +11,14 @@ const renderFilterElement = (caption, amount, isDisabled = false, isChecked = fa
           id="filter__${caption.toLowerCase()}"
           class="filter__input visually-hidden"
           name="filter"
-          ${isChecked ? " checked" : ""}
-          ${isDisabled ? " disabled" : ""}
+          ${isChecked ? ` checked` : ""}
+          ${isDisabled ? ` disabled` : ""}
         />
         <label for="filter__${caption.toLowerCase()}" class="filter__label"
         >${caption.toUpperCase()} <span class="filter__${caption.toLowerCase()}-count">${amount}</span></label
         >
   `;
-}
+};
 const renderCardElement = () => {
   return `<article class="card card--edit card--black">
             <form class="card__form" method="get">
@@ -266,37 +268,35 @@ This is example of new task, you can add picture, set date and time, add tags.</
             </form>
           </article>
   `;
-}
-
-const fillTheCards = (amount) => {
-  for (let i=0; i < amount; i++) {
-    boardTasksElement.insertAdjacentHTML('beforeend', renderCardElement());
-}
 };
 
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('All', randomInteger(0, 120), false, true));
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('Overdue', randomInteger(0, 120), true));
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('Today', randomInteger(0, 120), true));
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('Favorites', randomInteger(0, 120)));
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('Repeating', randomInteger(0, 120)));
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('Tags', randomInteger(0, 120)));
-mainFilterElement.insertAdjacentHTML('beforeend', renderFilterElement('Archive', randomInteger(0, 120)));
+const fillTheCards = (amount) => {
+  for (let i = 0; i < amount; i++) {
+    boardTasksElement.insertAdjacentHTML(`beforeend`, renderCardElement());
+  }
+};
+
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`All1, randomInteger(0, 120), false, true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Overdue`, randomInteger(0, 120), true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Today`, randomInteger(0, 120), true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Favorites`, randomInteger(0, 120)));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Repeating`, randomInteger(0, 120)));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Tags`, randomInteger(0, 120)));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Archive`, randomInteger(0, 120)));
 
 fillTheCards(numberOfCards);
 
-const filterElements = mainFilterElement.querySelectorAll('.filter__label');
+const filterElements = mainFilterElement.querySelectorAll(`.filter__label`);
 
-for (let i=0; i < filterElements.length; i++) {
+for (let i = 0; i < filterElements.length; i++) {
   filterElements[i].onclick = function (evt) {
     evt.preventDefault();
-    console.log(filterElements[i]);
     clearBoardTasks();
-  }
+  };
 }
 
 const clearBoardTasks = () => {
-  const cardElements = boardTasksElement.querySelectorAll('.card');
-  console.log(cardElements.length);
-  boardTasksElement.innerHTML = '';
+  const cardElements = boardTasksElement.querySelectorAll(`.card`);
+  boardTasksElement.innerHTML = ``;
   fillTheCards(randomInteger(1, 10));
 };
