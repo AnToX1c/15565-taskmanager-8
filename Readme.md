@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Anton Lapshin](https://up.htmlacademy.ru/ecmascript/8/user/15565).
-* Наставник: `Неизвестно`.
+* Наставник: [Денис Корнейчук](https://htmlacademy.ru/profile/id70618).
 
 ---
 
