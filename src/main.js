@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const mainFilterElement = document.querySelector(`.main__filter`);
 const boardTasksElement = document.querySelector(`.board__tasks`);
@@ -11,8 +11,8 @@ const renderFilterElement = (caption, amount, isDisabled = false, isChecked = fa
           id="filter__${caption.toLowerCase()}"
           class="filter__input visually-hidden"
           name="filter"
-          ${isChecked ? ` checked` : ""}
-          ${isDisabled ? ` disabled` : ""}
+          ${isChecked ? ` checked` : ``}
+          ${isDisabled ? ` disabled` : ``}
         />
         <label for="filter__${caption.toLowerCase()}" class="filter__label"
         >${caption.toUpperCase()} <span class="filter__${caption.toLowerCase()}-count">${amount}</span></label
@@ -296,7 +296,6 @@ for (let i = 0; i < filterElements.length; i++) {
 }
 
 const clearBoardTasks = () => {
-  const cardElements = boardTasksElement.querySelectorAll(`.card`);
   boardTasksElement.innerHTML = ``;
   fillTheCards(randomInteger(1, 10));
 };
