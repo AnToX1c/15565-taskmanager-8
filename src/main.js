@@ -276,7 +276,7 @@ const fillTheCards = (amount) => {
   }
 };
 
-mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`All1, randomInteger(0, 120), false, true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`All`, randomInteger(0, 120), false, true));
 mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Overdue`, randomInteger(0, 120), true));
 mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Today`, randomInteger(0, 120), true));
 mainFilterElement.insertAdjacentHTML(`beforeend`, renderFilterElement(`Favorites`, randomInteger(0, 120)));
