@@ -95,31 +95,38 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./renderFilterElement.js */ "./src/renderFilterElement.js");
-/* harmony import */ var _renderCardElement_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./renderCardElement.js */ "./src/renderCardElement.js");
+/* harmony import */ var _render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./render-filter-element.js */ "./src/render-filter-element.js");
+/* harmony import */ var _render_card_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./render-card-element.js */ "./src/render-card-element.js");
 
 
 
 const mainFilterElement = document.querySelector(`.main__filter`);
 const boardTasksElement = document.querySelector(`.board__tasks`);
-const filterElements = mainFilterElement.querySelectorAll(`.filter__label`);
 const numberOfCards = 7;
-
 const randomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
+
+const fillTheCards = (amount) => {
+  for (let i = 0; i < amount; i++) {
+    boardTasksElement.insertAdjacentHTML(`beforeend`, Object(_render_card_element_js__WEBPACK_IMPORTED_MODULE_1__["default"])());
+  }
+};
 
 const clearBoardTasks = () => {
   boardTasksElement.innerHTML = ``;
   fillTheCards(randomInteger(1, 10));
 };
 
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`All`, randomInteger(0, 120), false, true));
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Overdue`, randomInteger(0, 120), true));
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Today`, randomInteger(0, 120), true));
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Favorites`, randomInteger(0, 120)));
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Repeating`, randomInteger(0, 120)));
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Tags`, randomInteger(0, 120)));
-mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_renderFilterElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Archive`, randomInteger(0, 120)));
+let filterElements;
 
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`All`, randomInteger(0, 120), false, true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Overdue`, randomInteger(0, 120), true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Today`, randomInteger(0, 120), true));
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Favorites`, randomInteger(0, 120)));
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Repeating`, randomInteger(0, 120)));
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Tags`, randomInteger(0, 120)));
+mainFilterElement.insertAdjacentHTML(`beforeend`, Object(_render_filter_element_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`Archive`, randomInteger(0, 120)));
+
+filterElements = mainFilterElement.querySelectorAll(`.filter__label`);
 for (let i = 0; i < filterElements.length; i++) {
   filterElements[i].onclick = function (evt) {
     evt.preventDefault();
@@ -127,21 +134,15 @@ for (let i = 0; i < filterElements.length; i++) {
   };
 }
 
-const fillTheCards = (amount) => {
-  for (let i = 0; i < amount; i++) {
-    boardTasksElement.insertAdjacentHTML(`beforeend`, Object(_renderCardElement_js__WEBPACK_IMPORTED_MODULE_1__["default"])());
-  }
-};
-
 fillTheCards(numberOfCards);
 
 
 /***/ }),
 
-/***/ "./src/renderCardElement.js":
-/*!**********************************!*\
-  !*** ./src/renderCardElement.js ***!
-  \**********************************/
+/***/ "./src/render-card-element.js":
+/*!************************************!*\
+  !*** ./src/render-card-element.js ***!
+  \************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -403,10 +404,10 @@ This is example of new task, you can add picture, set date and time, add tags.</
 
 /***/ }),
 
-/***/ "./src/renderFilterElement.js":
-/*!************************************!*\
-  !*** ./src/renderFilterElement.js ***!
-  \************************************/
+/***/ "./src/render-filter-element.js":
+/*!**************************************!*\
+  !*** ./src/render-filter-element.js ***!
+  \**************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
