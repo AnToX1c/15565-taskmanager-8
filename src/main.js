@@ -1,20 +1,30 @@
 import renderFilterElement from './render-filter-element.js';
 import renderCardElement from './render-card-element.js';
+import getTask from './get-task.js';
 
+const NUMBER_OF_CARDS = 7;
 const mainFilterElement = document.querySelector(`.main__filter`);
 const boardTasksElement = document.querySelector(`.board__tasks`);
-const numberOfCards = 7;
 const randomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
-const fillTheCards = (amount) => {
+const getAllTasks = (amount) => {
+  const allTasks = [];
   for (let i = 0; i < amount; i++) {
-    boardTasksElement.insertAdjacentHTML(`beforeend`, renderCardElement());
+    allTasks.push(getTask());
+  }
+  return allTasks;
+};
+
+const fillTheBoard = (amount) => {
+  const allTasks = getAllTasks(amount);
+  for (const el of allTasks) {
+    boardTasksElement.insertAdjacentHTML(`beforeend`, renderCardElement(el));
   }
 };
 
 const clearBoardTasks = () => {
   boardTasksElement.innerHTML = ``;
-  fillTheCards(randomInteger(1, 10));
+  fillTheBoard(randomInteger(1, 10));
 };
 
 let filterElements;
@@ -35,4 +45,4 @@ for (let i = 0; i < filterElements.length; i++) {
   };
 }
 
-fillTheCards(numberOfCards);
+fillTheBoard(NUMBER_OF_CARDS);
