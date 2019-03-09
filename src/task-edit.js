@@ -15,7 +15,7 @@ export default class TaskEdit {
 
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
-    typeof this._onSubmit === `function` && this._onSubmit();
+    return typeof this._onSubmit === `function` && this._onSubmit();
   }
 
   _isRepeated() {
