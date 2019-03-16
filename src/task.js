@@ -27,7 +27,7 @@ class Task extends Component {
   }
 
   get template() {
-    return `<article class="card card--blue ${this._isRepeated() ? `card--repeat` : ``}">
+    return `<article class="card card--${this._color} ${this._isRepeated() ? `card--repeat` : ``}">
               <div class="card__inner">
                 <div class="card__control">
                   <button type="button" class="card__btn card__btn--edit">
@@ -63,9 +63,6 @@ class Task extends Component {
                 <div class="card__settings">
                   <div class="card__details">
                     <div class="card__dates">
-                      <button class="card__date-deadline-toggle" type="button">
-                        date: <span class="card__date-status">no</span>
-                      </button>
 
                       <fieldset class="card__date-deadline">
                         <label class="card__input-deadline-wrap">
@@ -87,10 +84,6 @@ class Task extends Component {
                           />
                         </label>
                       </fieldset>
-
-                      <button class="card__repeat-toggle" type="button">
-                        repeat:<span class="card__repeat-status">no</span>
-                      </button>
 
                       <fieldset class="card__repeat-days">
                         <div class="card__repeat-days-inner">
@@ -177,18 +170,8 @@ class Task extends Component {
                           <span class="card__hashtag-inner">
                             <input type="hidden" name="hashtag" value="${tag}" class="card__hashtag-hidden-input" />
                             <button type="button" class="card__hashtag-name">#${tag}</button>
-                            <button type="button" class="card__hashtag-delete">delete</button>
                           </span>`.trim()))).join(``)}
                       </div>
-
-                      <label>
-                        <input
-                          type="text"
-                          class="card__hashtag-input"
-                          name="hashtag-input"
-                          placeholder="Type new hashtag here"
-                        />
-                      </label>
                     </div>
                   </div>
 
@@ -216,6 +199,13 @@ class Task extends Component {
   unbind() {
     this._element.querySelector(`.card__btn--edit`)
         .removeEventListener(`click`, this._onEditButtonClick);
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
   }
 }
 

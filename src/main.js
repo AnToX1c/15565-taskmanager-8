@@ -18,21 +18,28 @@ const getAllTasks = (amount) => {
 
 const fillTheBoard = (amount) => {
   const allTasks = getAllTasks(amount);
-  for (const el of allTasks) {
-    const task = new Task(el);
-    const editTask = new TaskEdit(el);
-    boardTasksContainer.appendChild(task.render());
+  for (const task of allTasks) {
+    const taskComponent = new Task(task);
+    const editTaskComponent = new TaskEdit(task);
+    boardTasksContainer.appendChild(taskComponent.render());
 
-    task.onEdit = () => {
-      editTask.render();
-      boardTasksContainer.replaceChild(editTask.element, task.element);
-      task.unrender();
+    taskComponent.onEdit = () => {
+      editTaskComponent.render();
+      boardTasksContainer.replaceChild(editTaskComponent.element, taskComponent.element);
+      taskComponent.unrender();
     };
 
-    editTask.onSubmit = () => {
-      task.render();
-      boardTasksContainer.replaceChild(task.element, editTask.element);
-      editTask.unrender();
+    editTaskComponent.onSubmit = (newObject) => {
+      task.title = newObject.title;
+      task.tags = newObject.tags;
+      task.color = newObject.color;
+      task.repeatingDays = newObject.repeatingDays;
+      task.dueDate = newObject.dueDate;
+
+      taskComponent.update(task);
+      taskComponent.render();
+      boardTasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
+      editTaskComponent.unrender();
     };
   }
 };
