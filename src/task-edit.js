@@ -1,4 +1,6 @@
 import Component from './component.js';
+import moment from 'moment';
+import flatpickr from 'flatpickr';
 
 class TaskEdit extends Component {
   constructor(data) {
@@ -25,7 +27,7 @@ class TaskEdit extends Component {
       title: ``,
       color: ``,
       tags: new Set(),
-      dueDate: new Date(),
+      dueDate: this._dueDate,
       repeatingDays: {
         'mo': false,
         'tu': false,
@@ -41,10 +43,10 @@ class TaskEdit extends Component {
 
     for (const pair of formData.entries()) {
       const [property, value] = pair;
-      console.log(pair);
-      taskEditMapper[property] && taskEditMapper[property](value);
+      if (taskEditMapper[property]) {
+        taskEditMapper[property](value);
+      }
     }
-
     return entry;
   }
 
@@ -52,7 +54,9 @@ class TaskEdit extends Component {
     evt.preventDefault();
     const formData = new FormData(this._element.querySelector(`.card__form`));
     const newData = this._processForm(formData);
-    typeof this._onSubmit === `function` && this._onSubmit(newData);
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit(newData);
+    }
 
     this.update(newData);
   }
@@ -115,11 +119,11 @@ class TaskEdit extends Component {
 
                 <fieldset class="card__date-deadline" ${!this._state.isDate && `disabled`}>
                   <label class="card__input-deadline-wrap">
-                    <input class="card__date" type="text" placeholder="23 September" name="date" />
+                    <input class="card__date" type="text" placeholder="${moment(this._dueDate).format(`DD MMMM`)}" name="date" />
                   </label>
 
                   <label class="card__input-deadline-wrap">
-                    <input class="card__time" type="text" placeholder="11:15 PM" name="time" />
+                    <input class="card__time" type="text" placeholder="${moment(this._dueDate).format(`h:mm A`)}" name="time" />
                   </label>
                 </fieldset>
 
@@ -209,8 +213,8 @@ class TaskEdit extends Component {
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
 
     if (this._state.isDate) {
-      flatpickr(".card__date", {altInput: true, altFormat: "j F", dateFormat: "j F"});
-      flatpickr(".card__time", {enableTime: true, noCalendar: true, altInput: true, altFormat: "h:i K", dateFormat: "h:i K"});
+      flatpickr(`.card__date`, {altInput: true, altFormat: `j F`, dateFormat: `j F`});
+      flatpickr(`.card__time`, {enableTime: true, noCalendar: true, altInput: true, altFormat: `h:i K`, dateFormat: `h:i K`});
     }
   }
 
@@ -225,15 +229,25 @@ class TaskEdit extends Component {
     this._tags = data.tags;
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
   }
 
   static createMapper(target) {
     return {
       hashtag: (value) => target.tags.add(value),
-      text: (value) => target.title = value,
-      color: (value) => target.color = value,
-      repeat: (value) => target.repeatingDays[value] = true,
-      date: (value) => target.dueDate[value],
+      text: (value) => (target.title = value),
+      color: (value) => (target.color = value),
+      repeat: (value) => (target.repeatingDays[value] = true),
+      date: (value) => {
+        if (moment(value).isValid()) {
+          target.dueDate = moment(value + ` ` + moment(target.dueDate).format(`h:mm A`), `DD MMMM h:mm A`).toDate();
+        }
+      },
+      time: (value) => {
+        if (value) {
+          target.dueDate = moment(moment(target.dueDate).format(`DD MMMM`) + ` ` + value, `DD MMMM h:mm A`).toDate();
+        }
+      }
     };
   }
 }

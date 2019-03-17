@@ -1,4 +1,5 @@
 import Component from './component.js';
+import moment from 'moment';
 
 class Task extends Component {
   constructor(data) {
@@ -69,99 +70,22 @@ class Task extends Component {
                           <input
                             class="card__date"
                             type="text"
-                            placeholder="23 September"
+                            placeholder="${moment(this._dueDate).format(`DD MMMM`)}"
                             name="date"
-                            value="23 September"
+                            value="${moment(this._dueDate).format(`DD MMMM`)}"
                           />
                         </label>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__time"
                             type="text"
-                            placeholder="11:15 PM"
+                            placeholder="${moment(this._dueDate).format(`h:mm A`)}"
                             name="time"
-                            value="11:15 PM"
+                            value="${moment(this._dueDate).format(`h:mm A`)}"
                           />
                         </label>
                       </fieldset>
 
-                      <fieldset class="card__repeat-days">
-                        <div class="card__repeat-days-inner">
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-mo-6"
-                            name="repeat"
-                            value="mo"
-                          />
-                          <label class="card__repeat-day" for="repeat-mo-6"
-                            >mo</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-tu-6"
-                            name="repeat"
-                            value="tu"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-tu-6"
-                            >tu</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-we-6"
-                            name="repeat"
-                            value="we"
-                          />
-                          <label class="card__repeat-day" for="repeat-we-6"
-                            >we</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-th-6"
-                            name="repeat"
-                            value="th"
-                          />
-                          <label class="card__repeat-day" for="repeat-th-6"
-                            >th</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-fr-6"
-                            name="repeat"
-                            value="fr"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-fr-6"
-                            >fr</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            name="repeat"
-                            value="sa"
-                            id="repeat-sa-6"
-                          />
-                          <label class="card__repeat-day" for="repeat-sa-6"
-                            >sa</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-su-6"
-                            name="repeat"
-                            value="su"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-su-6"
-                            >su</label
-                          >
-                        </div>
-                      </fieldset>
                     </div>
 
                     <div class="card__hashtag">
@@ -206,6 +130,7 @@ class Task extends Component {
     this._tags = data.tags;
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
   }
 }
 
