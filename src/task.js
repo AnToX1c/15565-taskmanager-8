@@ -1,4 +1,5 @@
 import Component from './component.js';
+import moment from 'moment';
 
 class Task extends Component {
   constructor(data) {
@@ -27,7 +28,7 @@ class Task extends Component {
   }
 
   get template() {
-    return `<article class="card card--blue ${this._isRepeated() ? `card--repeat` : ``}">
+    return `<article class="card card--${this._color} ${this._isRepeated() ? `card--repeat` : ``}">
               <div class="card__inner">
                 <div class="card__control">
                   <button type="button" class="card__btn card__btn--edit">
@@ -63,112 +64,28 @@ class Task extends Component {
                 <div class="card__settings">
                   <div class="card__details">
                     <div class="card__dates">
-                      <button class="card__date-deadline-toggle" type="button">
-                        date: <span class="card__date-status">no</span>
-                      </button>
 
                       <fieldset class="card__date-deadline">
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__date"
                             type="text"
-                            placeholder="23 September"
+                            placeholder="${moment(this._dueDate).format(`DD MMMM`)}"
                             name="date"
-                            value="23 September"
+                            value="${moment(this._dueDate).format(`DD MMMM`)}"
                           />
                         </label>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__time"
                             type="text"
-                            placeholder="11:15 PM"
+                            placeholder="${moment(this._dueDate).format(`h:mm A`)}"
                             name="time"
-                            value="11:15 PM"
+                            value="${moment(this._dueDate).format(`h:mm A`)}"
                           />
                         </label>
                       </fieldset>
 
-                      <button class="card__repeat-toggle" type="button">
-                        repeat:<span class="card__repeat-status">no</span>
-                      </button>
-
-                      <fieldset class="card__repeat-days">
-                        <div class="card__repeat-days-inner">
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-mo-6"
-                            name="repeat"
-                            value="mo"
-                          />
-                          <label class="card__repeat-day" for="repeat-mo-6"
-                            >mo</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-tu-6"
-                            name="repeat"
-                            value="tu"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-tu-6"
-                            >tu</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-we-6"
-                            name="repeat"
-                            value="we"
-                          />
-                          <label class="card__repeat-day" for="repeat-we-6"
-                            >we</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-th-6"
-                            name="repeat"
-                            value="th"
-                          />
-                          <label class="card__repeat-day" for="repeat-th-6"
-                            >th</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-fr-6"
-                            name="repeat"
-                            value="fr"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-fr-6"
-                            >fr</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            name="repeat"
-                            value="sa"
-                            id="repeat-sa-6"
-                          />
-                          <label class="card__repeat-day" for="repeat-sa-6"
-                            >sa</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-su-6"
-                            name="repeat"
-                            value="su"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-su-6"
-                            >su</label
-                          >
-                        </div>
-                      </fieldset>
                     </div>
 
                     <div class="card__hashtag">
@@ -177,18 +94,8 @@ class Task extends Component {
                           <span class="card__hashtag-inner">
                             <input type="hidden" name="hashtag" value="${tag}" class="card__hashtag-hidden-input" />
                             <button type="button" class="card__hashtag-name">#${tag}</button>
-                            <button type="button" class="card__hashtag-delete">delete</button>
                           </span>`.trim()))).join(``)}
                       </div>
-
-                      <label>
-                        <input
-                          type="text"
-                          class="card__hashtag-input"
-                          name="hashtag-input"
-                          placeholder="Type new hashtag here"
-                        />
-                      </label>
                     </div>
                   </div>
 
@@ -216,6 +123,14 @@ class Task extends Component {
   unbind() {
     this._element.querySelector(`.card__btn--edit`)
         .removeEventListener(`click`, this._onEditButtonClick);
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
   }
 }
 

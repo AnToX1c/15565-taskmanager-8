@@ -9,7 +9,7 @@ const getTask = () => ({
   dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
   tags: [...taskTags.keys()].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3)),
   picture: `//picsum.photos/100/100?r=${Math.random()}`,
-  color: [...taskColors.keys()][Math.floor(Math.random() * taskColors.size)],
+  color: [...taskColors][Math.floor(Math.random() * taskColors.size)],
   repeatingDays: {
     'mo': getRandomBoolean(),
     'tu': getRandomBoolean(),
