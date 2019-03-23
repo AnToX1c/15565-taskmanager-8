@@ -21,7 +21,6 @@ const fillTheBoard = (amount) => {
   for (const task of allTasks) {
     const taskComponent = new Task(task);
     const editTaskComponent = new TaskEdit(task);
-    boardTasksContainer.appendChild(taskComponent.render());
 
     taskComponent.onEdit = () => {
       editTaskComponent.render();
@@ -30,18 +29,34 @@ const fillTheBoard = (amount) => {
     };
 
     editTaskComponent.onSubmit = (newObject) => {
-      task.title = newObject.title;
-      task.tags = newObject.tags;
-      task.color = newObject.color;
-      task.repeatingDays = newObject.repeatingDays;
-      task.dueDate = newObject.dueDate;
+      const updatedTask = updateTask(allTasks, task, newObject);
 
-      taskComponent.update(task);
+      taskComponent.update(updatedTask);
       taskComponent.render();
       boardTasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
       editTaskComponent.unrender();
     };
+
+    editTaskComponent.onDelete = () => {
+      deleteTask(allTasks, task);
+      boardTasksContainer.removeChild(editTaskComponent.element);
+      editTaskComponent.unrender();
+    };
+
+    boardTasksContainer.appendChild(taskComponent.render());
   }
+};
+
+const updateTask = (tasks, taskToUpdate, newTask) => {
+  const index = tasks.findIndex((it) => it === taskToUpdate);
+  tasks[index] = Object.assign({}, taskToUpdate, newTask);
+  return tasks[index];
+};
+
+const deleteTask = (tasks, taskToDelete) => {
+  const index = tasks.findIndex((it) => it === taskToDelete);
+  tasks[index] = null;
+  return tasks;
 };
 
 const clearBoardTasks = () => {
