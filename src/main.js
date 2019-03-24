@@ -1,24 +1,51 @@
-import renderFilterElement from './render-filter-element.js';
 import getTask from './get-task.js';
+import getFilter from './get-filter.js';
 import Task from './task.js';
 import TaskEdit from './task-edit.js';
+import Filter from './filter.js';
 
 const NUMBER_OF_CARDS = 7;
+const NUMBER_OF_FILTERS = 4;
 const mainFilterContainer = document.querySelector(`.main__filter`);
 const boardTasksContainer = document.querySelector(`.board__tasks`);
-const randomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
-const getAllTasks = (amount) => {
+const getFilters = () => {
+  const filters = [];
+  for (let i = 0; i < NUMBER_OF_FILTERS; i++) {
+    filters.push(getFilter(i));
+  }
+  return filters;
+};
+
+const filters = getFilters();
+
+const renderFilters = () => {
+  for (const filter of filters) {
+    const filterComponent = new Filter(filter);
+
+    filterComponent.onFilter = (evt) => {
+      const filterName = evt.target.id;
+      const filteredTasks = filterTasks(initialTasks, filterName);
+      fillTheBoard(filteredTasks);
+    };
+
+    mainFilterContainer.appendChild(filterComponent.render());
+  }
+};
+
+const getInitialTasks = () => {
   const allTasks = [];
-  for (let i = 0; i < amount; i++) {
+  for (let i = 0; i < NUMBER_OF_CARDS; i++) {
     allTasks.push(getTask());
   }
   return allTasks;
 };
 
-const fillTheBoard = (amount) => {
-  const allTasks = getAllTasks(amount);
-  for (const task of allTasks) {
+const initialTasks = getInitialTasks();
+
+const fillTheBoard = (tasks) => {
+  boardTasksContainer.innerHTML = ``;
+  for (const task of tasks) {
     const taskComponent = new Task(task);
     const editTaskComponent = new TaskEdit(task);
 
@@ -29,7 +56,7 @@ const fillTheBoard = (amount) => {
     };
 
     editTaskComponent.onSubmit = (newObject) => {
-      const updatedTask = updateTask(allTasks, task, newObject);
+      const updatedTask = updateTask(tasks, task, newObject);
 
       taskComponent.update(updatedTask);
       taskComponent.render();
@@ -38,7 +65,7 @@ const fillTheBoard = (amount) => {
     };
 
     editTaskComponent.onDelete = () => {
-      deleteTask(allTasks, task);
+      deleteTask(tasks, task);
       boardTasksContainer.removeChild(editTaskComponent.element);
       editTaskComponent.unrender();
     };
@@ -59,27 +86,23 @@ const deleteTask = (tasks, taskToDelete) => {
   return tasks;
 };
 
-const clearBoardTasks = () => {
-  boardTasksContainer.innerHTML = ``;
-  fillTheBoard(randomInteger(1, 10));
+const filterTasks = (tasks, filterName) => {
+  switch (filterName) {
+    case `filter__all`:
+      return tasks;
+
+    case `filter__overdue`:
+      return tasks.filter((it) => it.dueDate < Date.now());
+
+    case `filter__today`:
+      return tasks.filter(() => true);
+
+    case `filter__repeating`:
+      return tasks.filter((it) => [...Object.entries(it.repeatingDays)]
+          .some((rec) => rec[1]));
+  }
+  return tasks;
 };
 
-let filterElements;
-
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`All`, randomInteger(0, 120), false, true));
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`Overdue`, randomInteger(0, 120), true));
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`Today`, randomInteger(0, 120), true));
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`Favorites`, randomInteger(0, 120)));
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`Repeating`, randomInteger(0, 120)));
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`Tags`, randomInteger(0, 120)));
-mainFilterContainer.insertAdjacentHTML(`beforeend`, renderFilterElement(`Archive`, randomInteger(0, 120)));
-
-filterElements = mainFilterContainer.querySelectorAll(`.filter__label`);
-for (let i = 0; i < filterElements.length; i++) {
-  filterElements[i].onclick = function (evt) {
-    evt.preventDefault();
-    clearBoardTasks();
-  };
-}
-
-fillTheBoard(NUMBER_OF_CARDS);
+renderFilters();
+fillTheBoard(initialTasks);
