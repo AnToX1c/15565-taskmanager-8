@@ -3,9 +3,14 @@ import getFilter from './get-filter.js';
 import Task from './task.js';
 import TaskEdit from './task-edit.js';
 import Filter from './filter.js';
+import Statistic from './statistic.js';
 
 const NUMBER_OF_CARDS = 7;
 const NUMBER_OF_FILTERS = 4;
+const controlTask = document.querySelector(`#control__task`);
+const controlStatistic = document.querySelector(`#control__statistic`);
+const boardContainer = document.querySelector(`.board.container`);
+const statisticContainer = document.querySelector(`.statistic`);
 const mainFilterContainer = document.querySelector(`.main__filter`);
 const boardTasksContainer = document.querySelector(`.board__tasks`);
 
@@ -26,6 +31,7 @@ const renderFilters = () => {
     filterComponent.onFilter = (evt) => {
       const filterName = evt.target.id;
       const filteredTasks = filterTasks(initialTasks, filterName);
+      boardTasksContainer.innerHTML = ``;
       fillTheBoard(filteredTasks);
     };
 
@@ -44,7 +50,6 @@ const getInitialTasks = () => {
 const initialTasks = getInitialTasks();
 
 const fillTheBoard = (tasks) => {
-  boardTasksContainer.innerHTML = ``;
   for (const task of tasks) {
     const taskComponent = new Task(task);
     const editTaskComponent = new TaskEdit(task);
@@ -72,6 +77,7 @@ const fillTheBoard = (tasks) => {
 
     boardTasksContainer.appendChild(taskComponent.render());
   }
+  controlStatistic.addEventListener(`click`, renderStatistic);
 };
 
 const updateTask = (tasks, taskToUpdate, newTask) => {
@@ -102,6 +108,23 @@ const filterTasks = (tasks, filterName) => {
           .some((rec) => rec[1]));
   }
   return tasks;
+};
+
+const renderStatistic = () => {
+  boardTasksContainer.innerHTML = ``;
+  boardContainer.classList.add(`visually-hidden`);
+  statisticContainer.classList.remove(`visually-hidden`);
+  const statisticComponent = new Statistic(initialTasks);
+  statisticContainer.appendChild(statisticComponent.render());
+  controlTask.addEventListener(`click`, unrenderStatistic);
+};
+
+const unrenderStatistic = () => {
+  controlStatistic.removeEventListener(`click`, renderStatistic);
+  statisticContainer.innerHTML = ``;
+  statisticContainer.classList.add(`visually-hidden`);
+  boardContainer.classList.remove(`visually-hidden`);
+  fillTheBoard(initialTasks);
 };
 
 renderFilters();
